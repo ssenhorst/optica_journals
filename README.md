@@ -4,6 +4,8 @@ A template for the Optica (formerly OSA) publisher.
 
 - Author: Sander Senhorst (TU Delft)
 
+![A render of the example paper in examples/](thumbnail.png)
+
 ## Notes
 
 - The Optica template requires a build using pdflatex to handle the fonts correctly, while MyST uses xelatex by default.

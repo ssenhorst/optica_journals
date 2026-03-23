@@ -1,0 +1,159 @@
+\documentclass{optica-article}
+[# if options.journal #]
+\journal{[-- options.journal --]} % for journals or Optica Open
+[# else #]
+\journal{opticajournal} % for journals or Optica Open
+[# endif #]
+
+\articletype{Research Article}
+
+\usepackage{lineno}
+\usepackage[sort&compress]{natbib}
+[# if options.bibliography_package #]
+\usepackage{[-- options.bibliography_package --]}
+[# endif #]
+[-IMPORTS-]
+\linenumbers % Turn off line numbering for Optica Open preprint submissions.
+\setcitestyle{numbers,open={[},close={]},comma}
+% Required to fix the natbib bibliography styling
+\makeatletter
+\AddToHook{begindocument/end}{%
+	% Keep in-text citations bracketed, but bibliography labels as `1.`.
+	\renewcommand\bibnumfmt[1]{#1.}
+	\renewcommand\@biblabel[1]{#1.}
+	\renewcommand\NAT@biblabelnum[1]{\bibnumfmt{##1}}
+	% Remove extra vertical gaps between bibliography items.
+	\@ifundefined{bibsep}{}{\setlength{\bibsep}{0pt}}
+	\renewcommand\NAT@bibsetnum[1]{%
+		\settowidth\labelwidth{\@biblabel{##1}}%
+		\setlength{\leftmargin}{\labelwidth}\addtolength{\leftmargin}{\labelsep}%
+		\setlength{\parsep}{0pt}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\setlength{\topsep}{0pt}%
+		\setlength{\partopsep}{0pt}%
+		\setlength{\listparindent}{0pt}%
+		\setlength{\itemindent}{0pt}%
+		\ifNAT@openbib
+			\addtolength{\leftmargin}{\bibindent}%
+			\setlength{\itemindent}{-\bibindent}%
+			\setlength{\listparindent}{\itemindent}%
+			\setlength{\parsep}{0pt}%
+		\fi
+	}%
+	\let\@bibsetup\NAT@bibsetnum
+}
+\makeatother
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+
+\begin{document}
+
+\title{[-doc.title-]}
+
+\author{
+[#- for author in doc.authors -#]
+[# if loop.last and loop.length > 1 #] and 
+[# elif not loop.first #], 
+[# endif #]
+[-- author.name --]
+[#- if author.affiliations -#]
+\authormark{
+[-- author.affiliations|join(",", "index") --]
+[#- if author.corresponding -#],*[#- endif -#]
+}
+
+[#- endif -#]
+[#- endfor -#]
+}
+
+\address{
+[# for affiliation in doc.affiliations #]
+\authormark{[-affiliation.index-]}{[# if affiliation.value.department #][- affiliation.value.department -], [# endif #][-affiliation.value.name-], [-affiliation.value.address-], [-affiliation.value.postal_code-], [-affiliation.value.country-] }\\
+[# endfor #]
+}
+
+\email{\authormark{*}
+[#- for author in doc.authors -#]
+[#- if author.corresponding -#]
+[-- author.email --]
+[#- endif -#]
+[#- endfor -#]} %% email address is required; see note below about the corresponding author designation
+
+
+% use {asbstract*} to suppress the copyright line. Copyright information will be added in production
+[# if parts.abstract #]
+\begin{abstract*}
+[-parts.abstract-]
+\end{abstract*}
+[# endif #]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  body  %%%%%%%%%%%%%%%%%%%%%%%%%%
+[-CONTENT-]
+
+\begin{backmatter}
+
+\bmsection{Funding}
+
+[# if parts.funding #]
+[-parts.funding-]
+[# else #]
+This content will be filled in by the PRISM submission system.
+[# endif #]
+
+
+[# if parts.acknowledgement #]
+\bmsection{Acknowledgment}
+[-parts.acknowledgement-]
+[# endif #]
+
+[# if parts.disclosures #]
+\bmsection{Disclosures}
+[-parts.disclosures-]
+[# endif #]
+
+[# if parts.data_availability #]
+\bmsection{Data Availability Statement}
+[-parts.data_availability-]
+[# endif #]
+
+[# if parts.supplemental #]
+\bmsection{Supplemental document}
+[-parts.supplemental-]
+[# endif #]
+\end{backmatter}
+
+%%%%%%%%%%%%%%%%%%%%%%% References %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% If using BibTeX:
+[# if doc.bibliography #]
+%%%%%%%%%%%%%%   Bibliography   %%%%%%%%%%%%%%
+\bibliography{[- doc.bibliography | join(", ") -]}
+[# endif #]
+
+%%%%%%%%%% If preparing manually:
+% \begin{thebibliography}{1}
+% \newcommand{\enquote}[1]{``#1''}
+
+% \bibitem{Zhang:14}
+% Y.~Zhang, S.~Qiao, L.~Sun, Q.~W. Shi, W.~Huang, L.~Li, and Z.~Yang,
+%   \enquote{Photoinduced active terahertz metamaterials with nanostructured
+%   vanadium dioxide film deposited by sol-gel method,}
+%   {\protect\JournalTitle{Optics Express}} \textbf{22}, 11070--11078 (2014).
+
+% \bibitem{Optica}
+% {Optica}, \enquote{{Optica Publishing Group},}
+%   \url{http://www.opg.optica.org}.
+
+% \bibitem{FORSTER2007}
+% P.~Forster, V.~Ramaswamy, P.~Artaxo, T.~Bernsten, R.~Betts, D.~Fahey,
+%   J.~Haywood, J.~Lean, D.~Lowe, G.~Myhre, J.~Nganga, R.~Prinn, G.~Raga,
+%   M.~Schulz, and R.~V. Dorland, \enquote{Changes in atmospheric consituents and
+%   in radiative forcing,} in \enquote{Climate Change 2007: The Physical Science
+%   Basis. Contribution of Working Group 1 to the Fourth Assesment Report of
+%   Intergovernmental Panel on Climate Change,}  S.~Solomon, D.~Qin, M.~Manning,
+%   Z.~Chen, M.~Marquis, K.~B. Averyt, M.~Tignor, and H.~L. Miler, eds.
+%   (Cambridge University Press, 2007).
+
+% \end{thebibliography}
+
+\end{document}

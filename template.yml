@@ -1,0 +1,106 @@
+jtex: v1
+title: 'Optica journals template'
+description: 'A template for the Optica (formerly OSA) publisher'
+version: 1.0.0
+license: CC-BY-4.0
+source: 'https://opg.optica.org/content/author/portal/item/templates-default/'
+thumbnail: ./thumbnail.png
+authors:
+  - name: 'Sander Senhorst'
+
+tags:
+  - paper
+
+parts:
+  - id: abstract
+    required: true
+    description: >
+      A good abstract will begin with a short description of the problem being
+      addressed, briefly describe the new data or analyses, then briefly states
+      the main conclusion(s) and how they are supported and uncertainties.
+  - id: funding
+    required: false
+    description: >
+      This part will be filled in by the PRISM submission system, but can be included in the source document if desired. If included in the source document, it is just for visualization purposes and will be replaced by the PRISM content during submission anyways.
+  - id: acknowledgement
+    required: false
+    description: >
+      Additional information crediting individuals who contributed to the work being reported, clarifying who received funding from a particular source, or other information that does not fit the criteria for the funding block may also be included; for example, 'K. Flockhart thanks the National Science Foundation for help identifying collaborators for this work.'
+  - id: disclosures
+    required: false
+    description: >
+      List the Disclosures codes identified on the [Conflict of Interest policy page](https://opg.optica.org/submit/review/data-availability-policy.cfm).
+  - id: data_availability
+    required: false
+    description: >
+      A Data Availability Statement (DAS) is required for all submissions (except JOCN papers). The DAS should be an unnumbered separate section titled ``Data availability'' that
+      immediately follows the Disclosures section. See the [Data Availability Statement policy page](https://opg.optica.org/submit/review/data-availability-policy.cfm) for more information.
+      - When datasets are included as integral supplementary material in the paper, they must be declared (e.g., as "Dataset 1" following our current supplementary materials policy) and cited in the DAS, and should appear in the references.
+      - When datasets are cited but not submitted as integral supplementary material, they must be cited in the DAS and should appear in the references.
+      - If the data generated or analyzed as part of the research are not publicly available, that should be stated. Authors are encouraged to explain why (e.g. the data may be restricted for privacy reasons), and how the data might be obtained or accessed in the future.
+      - If no data were generated or analyzed in the presented research, that should be stated.
+      - Data availability statements are not required for preprint submissions.
+  - id: supplemental
+    required: false
+    description: >
+      A supplemental document must be called out in the back matter so that a link can be included. For example, “See Supplement 1 for supporting content.” Note that the Supplemental Document must also have a callout in the body of the paper.
+    
+    
+doc:
+  - id: title
+    required: true
+  - id: authors
+    required: true
+  - id: affiliations
+    required: true
+  - id: bibliography
+
+options:
+  - type: string
+    id: journal
+    description: >
+      The journal to which the paper is being submitted. If not specified, the default is `opticajournal`.
+  - type: choice
+    id: bibliography_package
+    description: >
+      The bibliography package to use. If not specified, the default is `natbib`.
+    choices:
+      - natbib
+      - biblatex
+      - cite
+
+files:
+  - template.tex
+  - optica-article.cls
+  - opticajnl.bst
+  - opticajnlnt.bst
+  - styles/opticajournal.sty
+  - jabbrv-ltwa-all.ldf
+  - jabbrv-ltwa-en.ldf
+  - jabbrv.sty
+packages:
+  - amsmath
+  - lineno
+  - natbib
+  -  geometry
+  -  xcolor
+  -  tabularx
+  -  multirow
+  -  array
+  -  graphicx
+  -  silence 
+  -  fontenc 
+  -  newtxtext
+  -  newtxmath
+  -  courier 
+  -  fix-cm
+  -  helvet
+  -  ifpdf
+  -  microtype
+  -  soul 
+  -  fancyhdr
+  -  lastpage
+  -  caption 
+  -  jabbrv
+  -  hyperref
+  -  kvoptions

@@ -21,11 +21,11 @@
 	% Keep in-text citations bracketed, but bibliography labels as `1.`.
 	\renewcommand\bibnumfmt[1]{#1.}
 	\renewcommand\@biblabel[1]{#1.}
-	\renewcommand\NAT@biblabelnum[1]{\bibnumfmt{##1}}
+	\renewcommand\NAT@biblabelnum[1]{\bibnumfmt{#1}}
 	% Remove extra vertical gaps between bibliography items.
 	\@ifundefined{bibsep}{}{\setlength{\bibsep}{0pt}}
 	\renewcommand\NAT@bibsetnum[1]{%
-		\settowidth\labelwidth{\@biblabel{##1}}%
+		\settowidth\labelwidth{\@biblabel{#1}}%
 		\setlength{\leftmargin}{\labelwidth}\addtolength{\leftmargin}{\labelsep}%
 		\setlength{\parsep}{0pt}%
 		\setlength{\itemsep}{0pt}%

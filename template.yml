@@ -13,7 +13,7 @@ tags:
 
 parts:
   - id: abstract
-    required: true
+    required: False
     description: >
       A good abstract will begin with a short description of the problem being
       addressed, briefly describe the new data or analyses, then briefly states
@@ -44,8 +44,8 @@ parts:
     required: false
     description: >
       A supplemental document must be called out in the back matter so that a link can be included. For example, “See Supplement 1 for supporting content.” Note that the Supplemental Document must also have a callout in the body of the paper.
-    
-    
+
+
 doc:
   - id: title
     required: true
@@ -68,10 +68,20 @@ options:
       - natbib
       - biblatex
       - cite
+  - type: boolean
+    id: supplemental
+    default: false
+    description: >
+      Whether the paper includes a supplemental document. If true, the `optica-supplemental-document.cls` class will be used for the supplemental document. If not specified, the default is `false`.
+  - type: string
+    id: preamble
+    description: >
+      Additional LaTeX code to include in the preamble of the document. This can be used to include additional packages, define new commands, etc. If not specified, no additional code will be included in the preamble.
 
 files:
   - template.tex
   - optica-article.cls
+  - optica-supplemental-document.cls
   - opticajnl.bst
   - opticajnlnt.bst
   - styles/opticajournal.sty

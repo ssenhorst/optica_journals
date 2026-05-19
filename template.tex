@@ -1,3 +1,7 @@
+[# if not options.supplemental #]
+%%%%%%%%%%%%%%%%%%%%%%
+%% Standard article %%
+%%%%%%%%%%%%%%%%%%%%%%
 \documentclass{optica-article}
 [# if options.journal #]
 \journal{[-- options.journal --]} % for journals or Optica Open
@@ -12,6 +16,7 @@
 [# if options.bibliography_package #]
 \usepackage{[-- options.bibliography_package --]}
 [# endif #]
+
 [-IMPORTS-]
 \linenumbers % Turn off line numbering for Optica Open preprint submissions.
 \setcitestyle{numbers,open={[},close={]},comma}
@@ -44,7 +49,10 @@
 	\let\@bibsetup\NAT@bibsetnum
 }
 \makeatother
-\renewcommand{\vec}[1]{\boldsymbol{#1}}
+[# if options.preamble #]
+[-options.preamble-]
+[# endif #]
+
 
 \begin{document}
 
@@ -87,8 +95,9 @@
 \end{abstract*}
 [# endif #]
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%  body  %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [-CONTENT-]
 
 \begin{backmatter}
@@ -130,30 +139,73 @@ This content will be filled in by the PRISM submission system.
 \bibliography{[- doc.bibliography | join(", ") -]}
 [# endif #]
 
-%%%%%%%%%% If preparing manually:
-% \begin{thebibliography}{1}
-% \newcommand{\enquote}[1]{``#1''}
+\end{document}
 
-% \bibitem{Zhang:14}
-% Y.~Zhang, S.~Qiao, L.~Sun, Q.~W. Shi, W.~Huang, L.~Li, and Z.~Yang,
-%   \enquote{Photoinduced active terahertz metamaterials with nanostructured
-%   vanadium dioxide film deposited by sol-gel method,}
-%   {\protect\JournalTitle{Optics Express}} \textbf{22}, 11070--11078 (2014).
+[# else #]
+% options.supplemental = true
 
-% \bibitem{Optica}
-% {Optica}, \enquote{{Optica Publishing Group},}
-%   \url{http://www.opg.optica.org}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Supplemental document %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[9pt]{optica-supplemental-document}
+\setboolean{shortarticle}{false}
 
-% \bibitem{FORSTER2007}
-% P.~Forster, V.~Ramaswamy, P.~Artaxo, T.~Bernsten, R.~Betts, D.~Fahey,
-%   J.~Haywood, J.~Lean, D.~Lowe, G.~Myhre, J.~Nganga, R.~Prinn, G.~Raga,
-%   M.~Schulz, and R.~V. Dorland, \enquote{Changes in atmospheric consituents and
-%   in radiative forcing,} in \enquote{Climate Change 2007: The Physical Science
-%   Basis. Contribution of Working Group 1 to the Fourth Assesment Report of
-%   Intergovernmental Panel on Climate Change,}  S.~Solomon, D.~Qin, M.~Manning,
-%   Z.~Chen, M.~Marquis, K.~B. Averyt, M.~Tignor, and H.~L. Miler, eds.
-%   (Cambridge University Press, 2007).
+\title{[-doc.title-]}
+\author{} %leave this blank
+%% DO NOT ADD AUTHOR INFORMATION HERE; IT WILL BE ADDED DURING PRODUCTION
 
-% \end{thebibliography}
+\setboolean{displaycopyright}{false} %copyright statement should not display in the  supplemental document
+
+\usepackage[sort&compress]{natbib}
+[# if options.bibliography_package #]
+\usepackage{[-- options.bibliography_package --]}
+[# endif #]
+[-IMPORTS-]
+\linenumbers % Turn off line numbering for Optica Open preprint submissions.
+\setcitestyle{numbers,open={[},close={]},comma}
+% Required to fix the natbib bibliography styling
+\makeatletter
+\AddToHook{begindocument/end}{%
+	% Keep in-text citations bracketed, but bibliography labels as `1.`.
+	\renewcommand\bibnumfmt[1]{#1.}
+	\renewcommand\@biblabel[1]{#1.}
+	\renewcommand\NAT@biblabelnum[1]{\bibnumfmt{#1}}
+	% Remove extra vertical gaps between bibliography items.
+	\@ifundefined{bibsep}{}{\setlength{\bibsep}{0pt}}
+	\renewcommand\NAT@bibsetnum[1]{%
+		\settowidth\labelwidth{\@biblabel{#1}}%
+		\setlength{\leftmargin}{\labelwidth}\addtolength{\leftmargin}{\labelsep}%
+		\setlength{\parsep}{0pt}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\setlength{\topsep}{0pt}%
+		\setlength{\partopsep}{0pt}%
+		\setlength{\listparindent}{0pt}%
+		\setlength{\itemindent}{0pt}%
+		\ifNAT@openbib
+			\addtolength{\leftmargin}{\bibindent}%
+			\setlength{\itemindent}{-\bibindent}%
+			\setlength{\listparindent}{\itemindent}%
+			\setlength{\parsep}{0pt}%
+		\fi
+	}%
+	\let\@bibsetup\NAT@bibsetnum
+}
+\makeatother
+[# if options.preamble #]
+[-options.preamble-]
+[# endif #]
+
+\begin{document}
+
+\maketitle
+
+[-CONTENT-]
+
+[# if doc.bibliography #]
+%%%%%%%%%%%%%%   Bibliography   %%%%%%%%%%%%%%
+\bibliography{[- doc.bibliography | join(", ") -]}
+[# endif #]
 
 \end{document}
+[# endif #]
